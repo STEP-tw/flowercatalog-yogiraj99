@@ -2,7 +2,8 @@ const webapp = require('./webapp.js');
 const http = require('http');
 const fs = require('fs');
 const Comments = require('./lib/comments.js');
-const guestBookSync=require('./lib/guestBook.js').guestBookSync;
+const giveVisitorGusetBook=require('./lib/guestBook.js').giveVisitorGusetBook;
+const giveUserGusetBook=require('./lib/guestBook.js').giveUserGusetBook;
 const guestBookPost=require('./lib/guestBook.js').guestBookPost;
 const doesExistInPublic = require('./lib/responseToFile.js').doesExistInPublic;
 const giveContentInResponse = require('./lib/responseToFile.js').giveContentInResponse;
@@ -10,9 +11,11 @@ const giveContentInResponse = require('./lib/responseToFile.js').giveContentInRe
 const PORT=8000;
 
 let comments=new Comments("./data/comments.JSON");
-let registered_users = [{userName:'yogi',name:'Yogiraj_Tambake'},{userName:'shubh',name:'Shubham_Jaybhaye'}];
+let registered_users = [{userName:'yogi',name:'Yogiraj_Tambake'}];
 
 let app=webapp.create();
+
+let guestBookHandler=giveVisitorGusetBook;
 
 let redirectSlashToIndexPage = function (req,res) {
   if (req.url=='/') res.redirect('/index.html');
@@ -39,20 +42,27 @@ let redirectUserNotLoggedinTryingToPost = function (req,res) {
   }
 }
 
+let setGuestBookHandler = function (req,res) {
+  if (req.user && req.url=="/guestBook") {
+    guestBookHandler=giveUserGusetBook
+  }
+  return ;
+}
+
 app.use(redirectSlashToIndexPage);
 app.use(loadUser);
 app.use(fileServer);
 app.use(redirectUserNotLoggedinTryingToPost);
+app.use(setGuestBookHandler)
 app.get("/guestBook",(req,res)=>{
   comments.loadComments();
-  guestBookSync(res,comments);
+  guestBookHandler(res,comments);
 })
 
 app.post('/login.html',(req,res)=>{
-  console.log(req.body.userName);
   let user = registered_users.find(u=>u.userName==req.body.userName);
   if(!user) {
-    res.redirect('/index.html');
+    res.redirect('/login.html');
     return;
   }
   let sessionid = new Date().getTime();
