@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/flowerCatlog.css">
+    <meta charset="utf-8">
+    <script type="text/javascript">
+      let blink = function () {
+        let gif=document.getElementById("gif");
+        gif.style.visibility="hidden";
+        setTimeout(showImage,1000)
+      }
+      let showImage = function () {
+        let gif=document.getElementById("gif");
+        gif.style.visibility="visible";
+      }
+    </script>
+    <title>FlowerCatlog</title>
+  </head>
+  <body>
+    <h2>flowerCatlog</h2>
+    <div><img src="img/freshorigins.jpg" alt="flowerImg" class="flowerImg">
+      <div class="">
+        <ul>
+          <li><a href="abeliophyllum.html">Abeliophyllum</a></li>
+          <li><a href="ageratum.html">Ageratum</a></li>
+        </ul>
+        <img src="img/animated-flower-image.gif" id="gif" onclick="blink()">
+        <br>
+        <a href="guestBook">Guest Book</a>
+      </div>
+    </div>
+  </body>
+</html>

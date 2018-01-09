@@ -1,0 +1,25 @@
+body{
+  margin-left: 100px;
+  margin-right: 100px;
+}
+div > div{
+  float: right;
+  margin-right: 100px;
+  margin-top: 300px;
+}
+h2{
+  text-align: right;
+  font-size: 40px;
+  color: orange;
+  padding-left: 100px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid grey;
+}
+.flowerImg{
+  width: 900px;
+  height: 700px;
+}
+
+#gif{
+  margin-left: 35px;
+}

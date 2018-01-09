@@ -1,0 +1,26 @@
+body{
+  margin-left: 100px;
+  margin-right: 100px;
+}
+img{
+  width: 800px;
+  height: 500px;
+  float: left;
+  margin-right: 5px;
+}
+.text{
+  margin-top: 150px;
+}
+.header{
+  border-bottom: 2px solid grey;
+}
+.homeLink{
+  float: left;
+  font-size: 50px;
+  margin-left: 500px;
+  margin-right: 0px;
+}
+h2{
+  color: orange;
+  font-size: 50px;
+}
