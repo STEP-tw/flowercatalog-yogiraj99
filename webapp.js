@@ -59,7 +59,7 @@ const main = function(req,res){
   req.on('end',()=>{
     req.body = parseBodyUsingQuerryString(content);
     content="";
-    debugger;
+    // debugger;
     this._preprocess.forEach(middleware=>{
       if(res.finished) return;
       middleware(req,res);
