@@ -21,6 +21,25 @@ let redirectSlashToIndexPage = function (req,res) {
   if (req.url=='/') res.redirect('/index.html');
 }
 
+let toS = o=>JSON.stringify(o,null,2);
+
+timeStamp = ()=>{
+  let t = new Date();
+  return `${t.toDateString()} ${t.toLocaleTimeString()}`;
+}
+
+let logRequest = (req,res)=>{
+  let text = ['------------------------------',
+    `${timeStamp()}`,
+    `${req.method} ${req.url}`,
+    `HEADERS=> ${toS(req.headers)}`,
+    `COOKIES=> ${toS(req.cookies)}`,
+    `BODY=> ${toS(req.body)}`,''].join('\n');
+  fs.appendFile('request.log',text,()=>{});
+
+  console.log(`${req.method} ${req.url}`);
+}
+
 let loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
   let user = registered_users.find(u=>u.sessionid==sessionid);
@@ -44,7 +63,7 @@ let redirectUserNotLoggedinTryingToPost = function (req,res) {
 
 let setGuestBookHandler = function (req,res) {
   if (req.user && req.url=="/guestBook") {
-    guestBookHandler=giveUserGusetBook
+    guestBookHandler=giveUserGusetBook;
   }
   return ;
 }
@@ -52,11 +71,19 @@ let setGuestBookHandler = function (req,res) {
 app.use(redirectSlashToIndexPage);
 app.use(loadUser);
 app.use(fileServer);
+app.use(logRequest);
 app.use(redirectUserNotLoggedinTryingToPost);
 app.use(setGuestBookHandler)
+
 app.get("/guestBook",(req,res)=>{
   comments.loadComments();
-  guestBookHandler(res,comments);
+  guestBookHandler(req,res,comments);
+})
+
+app.get("/logout",(req,res)=>{
+  res.setHeader('Set-Cookie', [`logInFailed=false;Expires=${new Date(1).toUTCString()}`, `sessionid=0;Expires=${new Date(1).toUTCString()}`]);
+  res.redirect("/guestBook");
+  guestBookHandler=giveVisitorGusetBook;
 })
 
 app.post('/login.html',(req,res)=>{
@@ -70,9 +97,11 @@ app.post('/login.html',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/guestBook');
 });
+
 app.post("/guestBook",(req,res)=>{
   comments.loadComments();
-  guestBookPost(req,res,comments)
+  guestBookPost(req,res,comments);
+  res.redirect("/guestBook");
 })
 
 

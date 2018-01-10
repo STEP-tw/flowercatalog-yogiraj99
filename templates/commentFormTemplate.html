@@ -1,10 +1,14 @@
-<form action="guestBook" method="POST">
-Name:
-  <input type="text" name="name" value="">
+<div id="loggedUserDiv">
+  <form action="guestBook" method="POST">
+    Name:
+    <input type="text" name="name" value="">
+    <br><br>
+    Comment:
+    <input type="text" id="comment" name="comment" value="">
+    <br><br>
+    <button type="submit" name="submit">Submit</button>
+  </form>
   <br><br>
-  Comment:
-  <input type="text" id="comment" name="comment" value="">
-  <br><br>
-  <button type="submit" name="submit">Submit</button>
-</form>
-<p style="floot:left">Logged in as yogi</p>
+  <a href="/logout">Logout</a>
+  <p>Logged in as yogi</p>
+</div>
